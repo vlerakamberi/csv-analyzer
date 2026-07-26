@@ -41,7 +41,7 @@ def analyze(df):
 
 
 def main():
-    df = load_data("data/titanic.csv")
+    df = load_data("data/raw/titanic.csv")
     df = clean_data(df)
     df = validate_data(df) 
     analyze(df)
