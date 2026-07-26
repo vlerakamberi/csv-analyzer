@@ -1,0 +1,45 @@
+import pandas as pd
+
+
+def load_data(filepath):
+    df = pd.read_csv(filepath)
+    print(f"U lexuan {len(df)} rreshta nga {filepath}")
+    return df
+
+
+def clean_data(df):
+    median_age = df["Age"].median()
+    df["Age"] = df["Age"].fillna(median_age)
+    print("Mosha u mbush me:", median_age)
+
+    df = df.drop(columns=["Cabin"])
+    print("Kolona Cabin u hoq")
+
+    rreshta_para = len(df)
+    df = df.dropna(subset=["Embarked"])
+    rreshta_pas = len(df)
+    print(f"U hoqën {rreshta_para - rreshta_pas} rreshta pa Embarked")
+
+    return df
+
+
+def analyze(df):
+    print()
+    print("=== Norma e mbijetesës sipas gjinisë ===")
+    print(df.groupby("Sex")["Survived"].mean())
+
+    print()
+    print("=== Norma e mbijetesës sipas klasës ===")
+    print(df.groupby("Pclass")["Survived"].mean())
+
+
+def main():
+    df = load_data("data/titanic.csv")
+    df = clean_data(df)
+    analyze(df)
+    df.to_csv("data/titanic_clean.csv", index=False)
+    print("\nU ruajt: data/titanic_clean.csv")
+
+
+if __name__ == "__main__":
+    main()
