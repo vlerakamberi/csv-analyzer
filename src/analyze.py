@@ -1,3 +1,4 @@
+from database import save_to_db, query_db
 import pandas as pd
 
 
@@ -37,8 +38,16 @@ def main():
     df = load_data("data/titanic.csv")
     df = clean_data(df)
     analyze(df)
-    df.to_csv("data/titanic_clean.csv", index=False)
-    print("\nU ruajt: data/titanic_clean.csv")
+
+    save_to_db(df)
+    print()
+    print("=== Pyetje SQL: mosha mesatare sipas klasës ===")
+    result = query_db("""
+        SELECT Pclass, AVG(Age) as avg_age, COUNT(*) as total
+        FROM passengers
+        GROUP BY Pclass
+    """)
+    print(result)
 
 
 if __name__ == "__main__":
